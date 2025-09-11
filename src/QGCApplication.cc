@@ -86,7 +86,7 @@ QGCApplication::QGCApplication(int &argc, char *argv[], const QGCCommandLinePars
 #ifdef QGC_DAILY_BUILD
         // This gives daily builds their own separate settings space. Allowing you to use daily and stable builds
         // side by side without daily screwing up your stable settings.
-        applicationName = QStringLiteral("%1 Daily").arg(QGC_APP_NAME);
+        applicationName = QStringLiteral("QGC - Colena");
 #else
         applicationName = QGC_APP_NAME;
 #endif
@@ -253,7 +253,8 @@ void QGCApplication::_initForNormalAppBoot()
     QGCCorePlugin::instance()->init();
     MAVLinkProtocol::instance()->init();
     MultiVehicleManager::instance()->init();
-    _qmlAppEngine = QGCCorePlugin::instance()->createQmlApplicationEngine(this);
+    //_qmlAppEngine = QGCCorePlugin::instance()->createQmlApplicationEngine(this);
+    _qmlAppEngine->load(QUrl(QStringLiteral("qrc:/qml/HomeScreen.qml")));
     QObject::connect(_qmlAppEngine, &QQmlApplicationEngine::objectCreationFailed, this, QCoreApplication::quit, Qt::QueuedConnection);
     QGCCorePlugin::instance()->createRootWindow(_qmlAppEngine);
 

@@ -4,7 +4,7 @@
 # === CONFIGURE THESE PATHS ===
 $QtHostPath       = "C:\Qt\6.8.3\mingw_64" # Path to your Qt installation for host (e.g., mingw_64)
 $QtAndroidKitPath = "C:\Qt\6.8.3\android_arm64_v8a" # Path to your Qt Android kit
-$AndroidSdkPath   = "C:\Android\Sdk" #Path to where androud sdk is installed
+$AndroidSdkPath   = "C:\Android\Sdk" #Path to where android sdk is installed
 $AndroidNdkPath   = "$AndroidSdkPath\ndk\26.1.10909125"
 $NinjaPath        = "C:\ninja"  # Path where ninja.exe is located
 

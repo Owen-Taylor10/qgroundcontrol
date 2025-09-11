@@ -1,27 +1,10 @@
-/****************************************************************************
- *
- * (c) 2009-2024 QGROUNDCONTROL PROJECT <http://www.qgroundcontrol.org>
- *
- * QGroundControl is licensed according to the terms in the file
- * COPYING.md in the root of the source code directory.
- *
- ****************************************************************************/
-
-
-/// @file
-///     @author Don Gagne <don@thegagnes.com>
-
 #include "QGCPalette.h"
 #include "QGCCorePlugin.h"
+#include <QDebug>
 
-#include <QtCore/QDebug>
-
-QList<QGCPalette*>   QGCPalette::_paletteObjects;
-
+QList<QGCPalette*> QGCPalette::_paletteObjects;
 QGCPalette::Theme QGCPalette::_theme = QGCPalette::Dark;
-
 QMap<int, QMap<int, QMap<QString, QColor>>> QGCPalette::_colorInfoMap;
-
 QStringList QGCPalette::_colors;
 
 QGCPalette::QGCPalette(QObject* parent) :
@@ -31,8 +14,6 @@ QGCPalette::QGCPalette(QObject* parent) :
     if (_colorInfoMap.isEmpty()) {
         _buildMap();
     }
-
-    // We have to keep track of all QGCPalette objects in the system so we can signal theme change to all of them
     _paletteObjects += this;
 }
 
@@ -48,61 +29,60 @@ void QGCPalette::_buildMap()
 {
     //                                      Light                 Dark
     //                                      Disabled   Enabled    Disabled   Enabled
-    DECLARE_QGC_COLOR(window,               "#ffffff", "#ffffff", "#222222", "#222222")
-    DECLARE_QGC_COLOR(windowShadeLight,     "#909090", "#828282", "#707070", "#626262")
-    DECLARE_QGC_COLOR(windowShade,          "#d9d9d9", "#d9d9d9", "#333333", "#333333")
-    DECLARE_QGC_COLOR(windowShadeDark,      "#bdbdbd", "#bdbdbd", "#282828", "#282828")
-    DECLARE_QGC_COLOR(text,                 "#9d9d9d", "#000000", "#707070", "#ffffff")
-    DECLARE_QGC_COLOR(warningText,          "#cc0808", "#cc0808", "#f85761", "#f85761")
-    DECLARE_QGC_COLOR(button,               "#ffffff", "#ffffff", "#707070", "#626270")
-    DECLARE_QGC_COLOR(buttonBorder,         "#ffffff", "#d9d9d9", "#707070", "#adadb8")
-    DECLARE_QGC_COLOR(buttonText,           "#9d9d9d", "#000000", "#A6A6A6", "#ffffff")
-    DECLARE_QGC_COLOR(buttonHighlight,      "#e4e4e4", "#946120", "#3a3a3a", "#fff291")
-    DECLARE_QGC_COLOR(buttonHighlightText,  "#2c2c2c", "#ffffff", "#2c2c2c", "#000000")
-    DECLARE_QGC_COLOR(primaryButton,        "#585858", "#8cb3be", "#585858", "#8cb3be")
-    DECLARE_QGC_COLOR(primaryButtonText,    "#2c2c2c", "#000000", "#2c2c2c", "#000000")
-    DECLARE_QGC_COLOR(textField,            "#ffffff", "#ffffff", "#707070", "#ffffff")
-    DECLARE_QGC_COLOR(textFieldText,        "#808080", "#000000", "#000000", "#000000")
-    DECLARE_QGC_COLOR(mapButton,            "#585858", "#000000", "#585858", "#000000")
-    DECLARE_QGC_COLOR(mapButtonHighlight,   "#585858", "#be781c", "#585858", "#be781c")
-    DECLARE_QGC_COLOR(mapIndicator,         "#585858", "#be781c", "#585858", "#be781c")
-    DECLARE_QGC_COLOR(mapIndicatorChild,    "#585858", "#766043", "#585858", "#766043")
-    DECLARE_QGC_COLOR(colorGreen,           "#008f2d", "#008f2d", "#00e04b", "#00e04b") 
-    DECLARE_QGC_COLOR(colorYellow,          "#a2a200", "#a2a200", "#ffff00", "#ffff00")  
-    DECLARE_QGC_COLOR(colorYellowGreen,     "#799f26", "#799f26", "#9dbe2f", "#9dbe2f")  
-    DECLARE_QGC_COLOR(colorOrange,          "#bf7539", "#bf7539", "#de8500", "#de8500")  
-    DECLARE_QGC_COLOR(colorRed,             "#b52b2b", "#b52b2b", "#f32836", "#f32836")
-    DECLARE_QGC_COLOR(colorGrey,            "#808080", "#808080", "#bfbfbf", "#bfbfbf")
-    DECLARE_QGC_COLOR(colorBlue,            "#1a72ff", "#1a72ff", "#536dff", "#536dff")
-    DECLARE_QGC_COLOR(alertBackground,      "#eecc44", "#eecc44", "#eecc44", "#eecc44")
-    DECLARE_QGC_COLOR(alertBorder,          "#808080", "#808080", "#808080", "#808080")
-    DECLARE_QGC_COLOR(alertText,            "#000000", "#000000", "#000000", "#000000")
-    DECLARE_QGC_COLOR(missionItemEditor,    "#585858", "#dbfef8", "#585858", "#585d83")
-    DECLARE_QGC_COLOR(toolStripHoverColor,  "#585858", "#9D9D9D", "#585858", "#585d83")
-    DECLARE_QGC_COLOR(statusFailedText,     "#9d9d9d", "#000000", "#707070", "#ffffff")
-    DECLARE_QGC_COLOR(statusPassedText,     "#9d9d9d", "#000000", "#707070", "#ffffff")
-    DECLARE_QGC_COLOR(statusPendingText,    "#9d9d9d", "#000000", "#707070", "#ffffff")
-    DECLARE_QGC_COLOR(toolbarBackground,    "#ffffff", "#ffffff", "#222222", "#222222")
-    DECLARE_QGC_COLOR(groupBorder,          "#bbbbbb", "#bbbbbb", "#707070", "#707070")
+    DECLARE_QGC_COLOR(window,               "#F5F5F5", "#F5F5F5", "#00001A", "#00001A") // Light off-white background
+    DECLARE_QGC_COLOR(windowShadeLight,     "#D0D4D8", "#D0D4D8", "#1C2526", "#1C2526") // Light gray shade
+    DECLARE_QGC_COLOR(windowShade,          "#C0C8CE", "#C0C8CE", "#263D4B", "#263D4B") // Medium gray shade
+    DECLARE_QGC_COLOR(windowShadeDark,      "#A8B0B9", "#A8B0B9", "#2E4A5C", "#2E4A5C") // Darker gray shade
+    DECLARE_QGC_COLOR(text,                 "#5C6566", "#1A2526", "#A8B0B2", "#D8E2E3") // Dark gray text for readability
+    DECLARE_QGC_COLOR(warningText,          "#A94442", "#A94442", "#A94442", "#A94442") // Muted dark red for warnings
+    DECLARE_QGC_COLOR(button,               "#E0E4E8", "#E0E4E8", "#1C2526", "#1C2526") // Light gray buttons
+    DECLARE_QGC_COLOR(buttonBorder,         "#C0C8CE", "#C0C8CE", "#1C2526", "#1C2526") // Medium gray button borders
+    DECLARE_QGC_COLOR(buttonText,           "#5C6566", "#1A2526", "#D8E2E3", "#FFFFFF") // Dark gray to black text on buttons
+    DECLARE_QGC_COLOR(buttonHighlight,      "#B8C4CE", "#4A6073", "#3A6073", "#3A6073") // Brighter gray-blue for highlighted buttons
+    DECLARE_QGC_COLOR(buttonHighlightText,  "#1A2526", "#FFFFFF", "#FFFFFF", "#FFFFFF") // White text for highlights
+    DECLARE_QGC_COLOR(primaryButton,        "#A8B0B9", "#4A6073", "#2E4A5C", "#2E4A5C") // Darker gray-blue for primary buttons
+    DECLARE_QGC_COLOR(primaryButtonText,    "#1A2526", "#FFFFFF", "#FFFFFF", "#FFFFFF") // White text for primary buttons
+    DECLARE_QGC_COLOR(textField,            "#FFFFFF", "#FFFFFF", "#1C2526", "#1C2526") // White text fields
+    DECLARE_QGC_COLOR(textFieldText,        "#5C6566", "#1A2526", "#A8B0B2", "#D8E2E3") // Dark gray to black text in fields
+    DECLARE_QGC_COLOR(mapButton,            "#A8B0B9", "#1A2526", "#2E4A5C", "#2E4A5C") // Darker gray map buttons
+    DECLARE_QGC_COLOR(mapButtonHighlight,   "#A8B0B9", "#4A6073", "#3A6073", "#3A6073") // Brighter gray-blue for map highlights
+    DECLARE_QGC_COLOR(mapIndicator,         "#A8B0B9", "#4A6073", "#2E4A5C", "#2E4A5C") // Darker gray map indicators
+    DECLARE_QGC_COLOR(mapIndicatorChild,    "#C0C8CE", "#5C6566", "#263D4B", "#263D4B") // Medium gray for child indicators
+    DECLARE_QGC_COLOR(colorGreen,           "#6A7342", "#6A7342", "#263D4B", "#263D4B") // Olive green for consistency
+    DECLARE_QGC_COLOR(colorYellow,          "#8C8B5D", "#8C8B5D", "#5C6566", "#5C6566") // Muted yellow for consistency
+    DECLARE_QGC_COLOR(colorYellowGreen,     "#6A7342", "#6A7342", "#5C6566", "#5C6566") // Yellow-green for consistency
+    DECLARE_QGC_COLOR(colorOrange,          "#8C5B3A", "#8C5B3A", "#5C6566", "#5C6566") // Muted orange for consistency
+    DECLARE_QGC_COLOR(colorRed,             "#672F2F", "#672F2F", "#A94442", "#A94442") // Muted dark red
+    DECLARE_QGC_COLOR(colorGrey,            "#5C6566", "#5C6566", "#5C6566", "#5C6566") // Consistent gray
+    DECLARE_QGC_COLOR(colorBlue,            "#4A6073", "#4A6073", "#00001A", "#00001A") // Lightened dark blue
+    DECLARE_QGC_COLOR(alertBackground,      "#D0D4D8", "#D0D4D8", "#1C2526", "#1C2526") // Light gray alert background
+    DECLARE_QGC_COLOR(alertBorder,          "#A8B0B9", "#A8B0B9", "#263D4B", "#263D4B") // Darker gray alert border
+    DECLARE_QGC_COLOR(alertText,            "#1A2526", "#1A2526", "#FFFFFF", "#FFFFFF") // Dark text for alerts
+    DECLARE_QGC_COLOR(missionItemEditor,    "#E0E4E8", "#B8C4CE", "#1C2526", "#1C2526") // Light gray mission editor
+    DECLARE_QGC_COLOR(toolStripHoverColor,  "#A8B0B9", "#C0C8CE", "#2E4A5C", "#2E4A5C") // Gray for hover
+    DECLARE_QGC_COLOR(statusFailedText,     "#5C6566", "#A94442", "#A94442", "#A94442") // Muted dark red for failed status
+    DECLARE_QGC_COLOR(statusPassedText,     "#5C6566", "#1A2526", "#D8E2E3", "#D8E2E3") // Dark gray for passed status
+    DECLARE_QGC_COLOR(statusPendingText,    "#5C6566", "#1A2526", "#D8E2E3", "#D8E2E3") // Dark gray for pending status
+    DECLARE_QGC_COLOR(toolbarBackground,    "#F5F5F5", "#F5F5F5", "#1C2526", "#1C2526") // Light off-white toolbar
+    DECLARE_QGC_COLOR(groupBorder,          "#C0C8CE", "#C0C8CE", "#263D4B", "#263D4B") // Medium gray for group borders
 
-    // Colors not affecting by theming
-    //                                              Disabled    Enabled
-    DECLARE_QGC_NONTHEMED_COLOR(brandingPurple,     "#4A2C6D", "#4A2C6D")
-    DECLARE_QGC_NONTHEMED_COLOR(brandingBlue,       "#48D6FF", "#6045c5")
-    DECLARE_QGC_NONTHEMED_COLOR(toolStripFGColor,   "#707070", "#ffffff")
+    // Colors not affected by theming
+    DECLARE_QGC_NONTHEMED_COLOR(brandingPurple,     "#4A2C6D", "#003366")
+    DECLARE_QGC_NONTHEMED_COLOR(brandingBlue,       "#48D6FF", "#00001A")
+    DECLARE_QGC_NONTHEMED_COLOR(toolStripFGColor,   "#707070", "#FFFFFF")
 
-    // Colors not affecting by theming or enable/disable
-    DECLARE_QGC_SINGLE_COLOR(mapWidgetBorderLight,          "#ffffff")
-    DECLARE_QGC_SINGLE_COLOR(mapWidgetBorderDark,           "#000000")
-    DECLARE_QGC_SINGLE_COLOR(mapMissionTrajectory,          "#be781c")
-    DECLARE_QGC_SINGLE_COLOR(surveyPolygonInterior,         "green")
-    DECLARE_QGC_SINGLE_COLOR(surveyPolygonTerrainCollision, "red")
+    // Colors not affected by theming or enable/disable
+    DECLARE_QGC_SINGLE_COLOR(mapWidgetBorderLight,          "#FFFFFF")
+    DECLARE_QGC_SINGLE_COLOR(mapWidgetBorderDark,           "#1C2526")
+    DECLARE_QGC_SINGLE_COLOR(mapMissionTrajectory,          "#2E4A5C")
+    DECLARE_QGC_SINGLE_COLOR(surveyPolygonInterior,         "#2E4A5C")
+    DECLARE_QGC_SINGLE_COLOR(surveyPolygonTerrainCollision, "#A94442")
 
 // Colors for UTM Adapter
 #ifdef QGC_UTM_ADAPTER
-    DECLARE_QGC_COLOR(switchUTMSP,        "#b0e0e6", "#b0e0e6", "#b0e0e6", "#b0e0e6");
-    DECLARE_QGC_COLOR(sliderUTMSP,        "#9370db", "#9370db", "#9370db", "#9370db");
-    DECLARE_QGC_COLOR(successNotifyUTMSP, "#3cb371", "#3cb371", "#3cb371", "#3cb371");
+    DECLARE_QGC_COLOR(switchUTMSP,        "#4A6073", "#4A6073", "#2E4A5C", "#2E4A5C")
+    DECLARE_QGC_COLOR(sliderUTMSP,        "#C0C8CE", "#C0C8CE", "#263D4B", "#263D4B")
+    DECLARE_QGC_COLOR(successNotifyUTMSP, "#4A6073", "#4A6073", "#2E4A5C", "#2E4A5C")
 #endif
 }
 
@@ -114,7 +94,6 @@ void QGCPalette::setColorGroupEnabled(bool enabled)
 
 void QGCPalette::setGlobalTheme(Theme newTheme)
 {
-    // Mobile build does not have themes
     if (_theme != newTheme) {
         _theme = newTheme;
         _signalPaletteChangeToAll();
@@ -123,7 +102,6 @@ void QGCPalette::setGlobalTheme(Theme newTheme)
 
 void QGCPalette::_signalPaletteChangeToAll()
 {
-    // Notify all objects of the new theme
     for (QGCPalette *palette : std::as_const(_paletteObjects)) {
         palette->_signalPaletteChanged();
     }
