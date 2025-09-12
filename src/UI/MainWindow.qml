@@ -28,6 +28,8 @@ ApplicationWindow {
     visible:        true
 
     property bool   _utmspSendActTrigger
+    property string _currentView: "Home"
+
 
     Component.onCompleted: {
         // Start the sequence of first run prompt(s)
@@ -115,12 +117,24 @@ ApplicationWindow {
     function showPlanView() {
         flyView.visible = false
         planView.visible = true
+        HomeScreen.visible = false
+        mainWindow._currentView = "Plan"
     }
 
     function showFlyView() {
         flyView.visible = true
         planView.visible = false
+        HomeScreen.visible = false
+        mainWindow._currentView = "Fly"
     }
+
+    function showHomeView() {
+        flyView.visible = false
+        planView.visible = false
+        mainWindow._currentView = "Home"
+    }
+
+
 
     function showTool(toolTitle, toolSource, toolIcon) {
         toolDrawer.backIcon     = flyView.visible ? "/qmlimages/PaperPlane.svg" : "/qmlimages/Plan.svg"
@@ -131,6 +145,8 @@ ApplicationWindow {
     }
 
     function showAnalyzeTool() {
+        HomeScreen.visible = false
+        flyView.visible = true
         showTool(qsTr("Analyze Tools"), "qrc:/qml/QGroundControl/AnalyzeView/AnalyzeView.qml", "/qmlimages/Analyze.svg")
     }
 
@@ -152,10 +168,14 @@ ApplicationWindow {
     }
 
     function showSettingsTool(settingsPage = "") {
+        HomeScreen.visible = false
+        flyView.visible = true
+        mainWindow._currentView = "Settings"
         showTool(qsTr("Application Settings"), "qrc:/qml/QGroundControl/Controls/AppSettings.qml", "/res/QGCLogoWhite")
         if (settingsPage !== "") {
             toolDrawerLoader.item.showSettingsPage(settingsPage)
         }
+
     }
 
     //-------------------------------------------------------------------------
@@ -263,12 +283,36 @@ ApplicationWindow {
     FlyView { 
         id:                     flyView
         anchors.fill:           parent
+        visible: mainWindow._currentView === "Fly"
     }
 
     PlanView {
         id:             planView
         anchors.fill:   parent
-        visible:        false
+        visible: mainWindow._currentView === "Plan"
+    }
+
+    HomeScreen {
+        id:             homeScreen
+        anchors.fill:   parent
+        visible:        mainWindow._currentView === "Home"
+        onFlyClicked: {
+            mainWindow.showFlyView()
+            mainWindow._currentView = "Fly"
+        }
+        onPlanClicked: {
+            mainWindow.showPlanView()
+            mainWindow._currentView = "Plan"
+        }
+        onAnalyzeClicked: {
+            mainWindow.showAnalyzeTool()
+            mainWindow._currentView = "Analyze"
+        }
+        onSettingsClicked: {
+            mainWindow.showSettingsTool()
+            mainWindow._currentView = "Settings"
+        }
+        z: 100
     }
 
     footer: LogReplayStatusBar {

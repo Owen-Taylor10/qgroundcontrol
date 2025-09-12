@@ -253,8 +253,8 @@ void QGCApplication::_initForNormalAppBoot()
     QGCCorePlugin::instance()->init();
     MAVLinkProtocol::instance()->init();
     MultiVehicleManager::instance()->init();
-    //_qmlAppEngine = QGCCorePlugin::instance()->createQmlApplicationEngine(this);
-    _qmlAppEngine->load(QUrl(QStringLiteral("qrc:/qml/HomeScreen.qml")));
+    _qmlAppEngine = QGCCorePlugin::instance()->createQmlApplicationEngine(this);
+    // _qmlAppEngine->load(QUrl(QStringLiteral("qrc:/qml/HomeScreen.qml")));
     QObject::connect(_qmlAppEngine, &QQmlApplicationEngine::objectCreationFailed, this, QCoreApplication::quit, Qt::QueuedConnection);
     QGCCorePlugin::instance()->createRootWindow(_qmlAppEngine);
 
