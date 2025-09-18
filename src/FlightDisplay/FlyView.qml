@@ -63,6 +63,9 @@ Item {
     property real   _fullItemZorder:    0
     property real   _pipItemZorder:     QGroundControl.zOrderWidgets
 
+    // Simulated pitch value (in degrees)
+    property real simulatedPitch: 0
+
     function _calcCenterViewPort() {
         var newToolInset = Qt.rect(0, 0, width, height)
         toolstrip.adjustToolInset(newToolInset)
@@ -105,6 +108,89 @@ Item {
             id:         videoControl
             pipView:    _pipView
         }
+
+        ColumnLayout {
+            id:                     leftHandButtons
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left:           parent.left
+            spacing:                ScreenTools.defaultFontPixelWidth / 2
+            uniformCellSizes:    true
+
+            QGCButton {
+                id:                 button1
+                text:               qsTr("Button 1")
+            }
+            QGCButton {
+                id:                 button2
+                text:               qsTr("Button 2")
+            }
+            QGCButton {
+                id:                 button3
+                text:               qsTr("Button 3")
+            }
+            QGCButton {
+                id:                 button4
+                text:               qsTr("Button 4")
+            }
+            QGCButton {
+                id:                 button5
+                text:               qsTr("Button 5")
+            }
+        }
+
+        ColumnLayout {
+            id:                     rightHandButtons
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right:           parent.right
+            //spacing:                ScreenTools.defaultFontPixelWidth / 2
+            spacing:                Screen.height * 0.01
+            property int buttonWidth: Screen.width * 0.1
+            uniformCellSizes:    true
+
+
+            QGCButton {
+                id:                 button6
+                text:               qsTr("Button 6")
+                width: parent.buttonWidth
+                onClicked: console.log("SOS")
+            }
+            QGCButton {
+                id:                 button7
+                text:               qsTr("Button 7")
+                width:              parent.buttonWidth
+            }
+            QGCButton {
+                id:                 button8
+                text:               qsTr("Button 8")
+                width:              parent.buttonWidth
+            }
+            QGCButton {
+                id:                 button9
+                text:               qsTr("Button 9")
+                width:              parent.buttonWidth
+            }
+            QGCButton {
+                id:                 button10
+                text:               qsTr("Button 10")
+                width:              parent.buttonWidth
+            }
+        }
+
+        Text {
+            id:                     debugText
+            anchors.horizontalCenter:       parent.horizontalCenter
+            anchors.top:            parent.top
+            color:                  "red"
+            font.pixelSize:         ScreenTools.defaultFontPixelWidth * 4
+            font.bold:              true
+            text:                   qsTr("DEBUG_MODE")
+            opacity:                0.4
+            visible:                true
+        }
+
+
+
+
 
         PipView {
             id:                     _pipView
@@ -177,6 +263,47 @@ Item {
             id: viewer3DWindow
             anchors.fill: parent
         }
+
+
+        GimbalTiltIndicator{
+            id: tiltIndicator
+            // activeGimbal: rootItem.activeGimbal
+            activeGimbal: null
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.rightMargin: 100
+            anchors.topMargin: 20
+
+            //anchors.verticalCenter: parent.verticalCenter
+        }
+
+        // --- Testing slider (remove later when gimbal is connected) ---
+        Slider {
+            id: pitchSlider
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 10
+            anchors.leftMargin: 50
+            anchors.rightMargin: 50
+            from: -90
+            to: 90
+            value: 0
+
+            onValueChanged: tiltIndicator.realPitch = value
+            Text {
+                id: pitchSliderText
+                anchors.bottom: parent.top
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.family: "Helvetica"
+                font.pointSize: 20
+                color: "#00ffea"
+                // text: "Pitch: " + parent.value.toFixed(2) + "°"
+                text: "Pitch: " + tiltIndicator.realPitch.toFixed(2) + "°"
+            }
+        }
+
+
     }
 
     UTMSPActivationStatusBar {

@@ -59,6 +59,7 @@ GeneratedFiles/
 gstreamer-1.0-android*
 localization/qgroundcontrol/
 build-android
+build-andro-rel
 buildQt
 
 *.autosave

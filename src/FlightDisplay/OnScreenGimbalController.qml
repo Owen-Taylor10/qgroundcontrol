@@ -51,6 +51,7 @@ Item {
             // console.log("X global: " + x + " Y global: " + y)
             // console.log("X coocked: " + xCoocked + " Y coocked: " + yCoocked)
             gimbalController.gimbalOnScreenControl(xCoocked, yCoocked, true, false, false)
+            //_activeVehicle.
         } else {
             // We should never be here
             console.log("gimbal not available")

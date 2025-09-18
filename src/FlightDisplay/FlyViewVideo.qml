@@ -97,6 +97,14 @@ Item {
         cameraTrackingEnabled:   videoStreaming._camera && videoStreaming._camera.trackingEnabled
     }
 
+    Rectangle {
+        id:             backgroundRect
+        anchors.fill:   parent
+        color:          "black"
+        z:              0
+    }
+
+
     MouseArea {
         id:                         flyViewVideoMouseArea
         anchors.fill:               parent
